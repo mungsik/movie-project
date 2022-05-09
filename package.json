@@ -4,5 +4,8 @@
   "main": "index.js",
   "repository": "https://mungsik@github.com/mungsik/movie-project",
   "author": "mungsik <sparkin154@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5"
+  }
 }
