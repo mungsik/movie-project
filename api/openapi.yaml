@@ -11,7 +11,7 @@ tags:
   - name: movies
     description: Methods to searching movies
 
-pahts:
+paths:
   /movies:
     get:
       tags:
