@@ -1,8 +1,8 @@
 import "dotenv/config";
-import { app } from "./src/app";
+import { app } from "./src/app.js";
 
-const PORT = process.env.SERVER_PORT || 8080;
+const PORT = process.env.SERVER_PORT || 5000;
 
 app.listen(PORT, () => {
-  console.log(`정상적으로 서버를 시작하였습니다.`);
+  console.log(`정상적으로 서버를 시작하였습니다. https://localhost:${PORT}`);
 });
