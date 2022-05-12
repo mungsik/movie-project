@@ -1,5 +1,3 @@
-// routes/posts.js
-
 /**
  * @swagger
  * tags:
