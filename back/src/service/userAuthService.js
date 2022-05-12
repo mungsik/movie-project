@@ -1,4 +1,4 @@
-import { User } from "../src/database";
+import { User } from "../database";
 import bcrypt from "bcrypt";
 import { v4 as uuidv4 } from "uuid";
 
@@ -54,5 +54,31 @@ class userAuthService {
     const secretKey = process.env.JWT_SECRET_KEY || "jwt-secret-key";
     // jwt.sign(payload, secret, options, [callback])
     const token = jwt.sign({ user_id: user.id }, secretKey);
+
+    // 반환할 Loginuser 객체를 위한 변수 설정
+    const id = user.id;
+    const name = user.name;
+    const description = user.description;
+
+    const loginUser = {
+      token,
+      id,
+      email,
+      name,
+      description,
+      errorMessage: null,
+    };
+
+    return loginUser;
+  }
+
+  // 모든 유저 정보 가져오기
+  static async getUsers() {
+    const users = await User.findAll();
+    return users;
+  }
+
+  static async setUser({ user_id, toUpdate }) {
+    let user = await User.findById({ user_id });
   }
 }

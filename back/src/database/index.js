@@ -16,3 +16,10 @@ db.on("error", (error) =>
 );
 
 export { User };
+
+/*
+mongoose 사용 이유
+
+mongoDB 자체에는 스키마가 없지만 이렇게 mongoose라는 ODM에서 우리가 코드 상으로 스키마를 정의할 수 있다.
+NoSQL 엔 스키마가 없지만, mongoose를 통해 일관성을 주는 것이다.
+*/
