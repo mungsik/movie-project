@@ -1,3 +1,26 @@
+/**
+ * @swagger
+ *  components:
+ *    schemas:
+ *      User:
+ *        type: object
+ *        required:
+ *          - name
+ *          - id
+ *          - email
+ *          - password
+ *        properties:
+ *          name:
+ *            type: string
+ *          id:
+ *            type: string
+ *          email:
+ *            type: string
+ *        example:
+ *          name: mungsik
+ *          email: mungsik@gmail.com
+ */
+
 const UserSchema = new Schema(
   {
     id: {
@@ -15,11 +38,6 @@ const UserSchema = new Schema(
     password: {
       type: String,
       required: true,
-    },
-    description: {
-      type: String,
-      required: true,
-      default: "설명이 아직 없습니다. 추가해 주세요",
     },
   },
   {
