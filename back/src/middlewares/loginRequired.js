@@ -1,3 +1,5 @@
+import jwt from "jsonwebtoken";
+
 const login_required = (req, res, next) => {
   // 이 토큰은 jwt 토큰 문자열이거나, 혹은 "null" 문자열
   const userToken = req.headers.authorization?.split(" ")[1] ?? "null";
@@ -25,4 +27,4 @@ const login_required = (req, res, next) => {
   }
 };
 
-export default login_required;
+export { login_required };
