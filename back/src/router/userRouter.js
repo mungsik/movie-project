@@ -43,6 +43,7 @@ const userAuthRouter = Router();
  *         description: "successful operation"
  *
  */
+
 userAuthRouter.post("/user/register", async function (req, res, next) {
   try {
     if (is.emptyObject(req.body)) {
@@ -50,13 +51,18 @@ userAuthRouter.post("/user/register", async function (req, res, next) {
         "headers의 Content-Type을 application/json으로 설정해주세요"
       );
     }
-    // req에서 데이터 가져오기
+
+    // req (request) 에서 데이터 가져오기
     const name = req.body.name;
     const email = req.body.email;
     const password = req.body.password;
 
     // 위 데이터를 유저 db에 추가하기
-    const newUser = await userAuthService.addUser({ email, password, name });
+    const newUser = await userAuthService.addUser({
+      name,
+      email,
+      password,
+    });
 
     if (newUser.errorMessage) {
       throw new Error(newUser.errorMessage);
