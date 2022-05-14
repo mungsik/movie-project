@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { User } from "./models/User";
+import { User } from "./models/User.js";
 
 const DB_URL =
   process.env.MONGODB_URL ||

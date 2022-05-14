@@ -6,9 +6,7 @@
         "targets": {
           "node": "current",
           "chrome": "87"
-        },
-        "useBuiltIns": "usage",
-        "corejs": "3.6.4"
+        }
       }
     ]
   ],

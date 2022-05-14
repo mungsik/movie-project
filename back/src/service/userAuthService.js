@@ -1,4 +1,4 @@
-import { User } from "../database";
+import { User } from "../database/index.js";
 import bcrypt from "bcrypt";
 import { v4 as uuidv4 } from "uuid";
 import jwt from "jsonwebtoken";

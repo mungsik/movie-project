@@ -1,3 +1,6 @@
+import Schema from "mongoose";
+import model from "mongoose";
+
 /**
  * @swagger
  *  components:

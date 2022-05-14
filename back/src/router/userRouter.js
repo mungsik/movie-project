@@ -2,8 +2,8 @@ import is from "@sindresorhus/is";
 // Type check values
 // ex) is.string('😁') => true
 import { Router } from "express";
-import { userAuthService } from "../service/userAuthService";
-import { login_required } from "../middlewares/loginRequired";
+import { userAuthService } from "../service/userAuthService.js";
+import { login_required } from "../middlewares/loginRequired.js";
 
 const userAuthRouter = Router();
 

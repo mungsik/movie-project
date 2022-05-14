@@ -3,8 +3,8 @@ import express from "express";
 import swaggerUi from "swagger-ui-express";
 import swaggerJsDoc from "swagger-jsdoc";
 import swaggerOptions from "./swagger.js";
-import { userAuthRouter } from "./router/userRouter";
-import { errorMiddleware } from "./middlewares/errorMiddleware";
+import { userAuthRouter } from "./router/userRouter.js";
+import { errorMiddleware } from "./middlewares/errorMiddleware.js";
 
 const app = express();
 const specs = swaggerJsDoc(swaggerOptions);
