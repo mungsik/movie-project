@@ -1,10 +1,12 @@
-import express from "express";
+import { app } from "./src/app.js";
+import dotenv from "dotenv";
 
-const app = express();
-const port = 3000; // port 번호 설정
-app.get("/", (req, res) => {
-  res.send("Hello World");
-});
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
+dotenv.config();
+
+const PORT = process.env.SERVER_PORT;
+
+app.listen(PORT, () => {
+  console.log(
+    `✅ http://localhost:${PORT} 에서 정상적으로 서버가 시작되었습니다.`
+  );
 });
