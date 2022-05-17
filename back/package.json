@@ -29,7 +29,9 @@
     "@babel/runtime": "^7.17.9",
     "@babel/runtime-corejs3": "^7.17.9",
     "core-js": "^3.22.5",
-    "nodemon": "^2.0.16"
+    "nodemon": "^2.0.16",
+    "swagger-jsdoc": "^6.2.1",
+    "swagger-ui-express": "^4.4.0"
   },
   "babel": {
     "presets": [

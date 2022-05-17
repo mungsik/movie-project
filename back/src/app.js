@@ -1,9 +1,13 @@
 import cors from "cors";
 import express from "express";
-import { userAuthRouter } from "./routers/userRouter.js";
-import { errorMiddleware } from "./middlewares/errorMiddleware.js";
+import swaggerJSDoc from "swagger-jsdoc";
+import swaggerOptions from "../swagger.js";
+import swaggerUi from "swagger-ui-express";
 
 const app = express();
+
+//swagger 실행
+const specs = swaggerJSDoc(swaggerOptions);
 
 // CORS 에러 방지
 app.use(cors());
@@ -13,16 +17,11 @@ app.use(cors());
 // express.urlencoded: 주로 Form submit 에 의해 만들어지는 URL-Encoded 형태의 데이터를 인식하고 핸들링할 수 있게 함.
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 
 // 기본 페이지
 app.get("/", (req, res) => {
   res.send("안녕하세요, 레이서 프로젝트 API 입니다.");
 });
-
-// router, service 구현 (userAuthRouter는 맨 위에 있어야 함.)
-app.use(userAuthRouter);
-
-// 순서 중요 (router 에서 next() 시 아래의 에러 핸들링  middleware로 전달됨)
-app.use(errorMiddleware);
 
 export { app };
