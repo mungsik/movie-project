@@ -1,13 +1,8 @@
 import "../src/tailwind.css";
-import Circle from "./Circle";
+import Router from "./Router";
 
 function App() {
-  return (
-    <>
-      <Circle borderColor="yellow" bgColor="teal" />
-      <Circle text="hello!" bgColor="tomato" />
-    </>
-  );
+  return <Router />;
 }
 
 export default App;
