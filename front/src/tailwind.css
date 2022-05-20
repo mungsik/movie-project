@@ -3,3 +3,25 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-bgColor;
+  }
+  ,
+  * {
+    @apply box-border;
+  }
+  ,
+  a {
+    @apply text-inherit;
+  }
+}
+/*
+
+1. 기본 백그라운드 컬러 적용
+2. 기본 box-size : border-box 적용
+3. text-color는 inherit 즉, 부모로부터 가져오라고함
+
+
+*/
