@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import tw from "tailwind-styled-components";
 import { useState, useEffect } from "react";
+import { useQuery } from "react-query";
+import { fetchCoins } from "./../api";
 
 const Container = tw.div`
   pl-0
@@ -40,6 +42,9 @@ interface CoinInterface {
 }
 
 function Coins() {
+  const { isLoading, data } = useQuery<CoinInterface[]>("allCoins", fetchCoins);
+  console.log(isLoading, data);
+  /*
   // state가 coin으로 된 array 라고 말해줌
   const [coins, setCoins] = useState<CoinInterface[]>([]);
   const [loading, setLoading] = useState(true);
@@ -53,16 +58,17 @@ function Coins() {
     })();
   }, []);
   // 아래 useEffect 안의 코드는 우리 component life의 시작점에서만 실행하도록함. 즉, 컴포넌트가 처음 시작될때 만.
+  */
   return (
     <Container className="font-base">
       <Header>
         <Title className="text-accentColor">코인들</Title>
       </Header>
-      {loading ? (
+      {isLoading ? (
         <div className="text-center block text-textColor">"Loading..."</div>
       ) : (
         <CoinsList className="text-bgColor">
-          {coins.map((coin) => (
+          {data?.slice(0, 100).map((coin) => (
             <Coin key={coin.id}>
               {/* 코인 카드 끝부분을 클릭해도 앵커 태그가 작동되게끔 display: block 적용 */}
               {/* 패딩 값을 각각의 코인에 줌으로써 코인 이름이 아닌 그 바깥을 클릭해도 클릭될 수 있게끔함. */}

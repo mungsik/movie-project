@@ -1,15 +1,15 @@
 import {
   Link,
   Outlet,
-  Route,
-  Routes,
   useLocation,
+  useMatch,
   useParams,
 } from "react-router-dom";
 import tw from "tailwind-styled-components";
 import { useState, useEffect } from "react";
-import Price from "./Price";
-import Chart from "./Chart";
+import styled from "styled-components";
+import { useQuery } from "react-query";
+import { fetchCoinTickers, fetchCoinInfo } from "./../api";
 
 const Container = tw.div`
   pl-0
@@ -61,16 +61,30 @@ const Tabs = tw.div`
   mx-0
   gap-2.5
 `;
-const Tab = tw.div`
-  text-center
-  uppercase
-  text-xs
-  font-normal
-  bg-overviewBgColor
-  py-2
-  px-0
-  rounded-xl
+
+const Tab = styled.span<{ isActive: boolean }>`
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 400;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 7px 0px;
+  border-radius: 10px;
+  color: ${(props) =>
+    props.isActive ? props.theme.accentColor : props.theme.textColor};
 `;
+
+// const Tab = tw.span<{ isActive: boolean}>`
+//   text-center
+//   uppercase
+//   text-xs
+//   font-normal
+//   bg-overviewBgColor
+//   py-2
+//   px-0
+//   rounded-xl
+//   color: ${(props) => props.isActive ? props.theme.accentColor : props.text-textColor}
+// `;
 
 interface LocationParams {
   state: {
@@ -134,20 +148,44 @@ interface PriceData {
 
 function Coin() {
   const { coinId } = useParams();
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(true);
   const { state } = useLocation() as LocationParams;
-  // useLoaction을 이용해 coin의 name을 직접 뿌려준다.
-  // console.log(useLocation());
-  // console.log(useParams());
+  const priceMatch = useMatch("/:coinId/price");
+  const chartMatch = useMatch("/:coinId/chart"); // useLoaction을 이용해 coin의 name을 직접 뿌려준다.
 
+  /*
+  useQuery의 인자로 넘길때는 함수의 형태로 넘겨야 하기 때문에 그냥 fetchCoinInfo(coinId)라고 작성하면 그 함수를 바로 실행해버리는 것이 되어
+  fetchCoinInfo(coinId)를 실행하여 리턴된 promise가 바로 들어가버립니다. 함수를 바로 실행하는 것이 아닌 () => fetchCoinInfo(coinId)로 작성하여
+  이 함수를 실행하는 함수를 새로 만들어 인자로 넘겨야 함수 자체를 넘길 수 있습니다.
+  */
+
+  /*
+  isLoading: infoLoading => isLoading의 기능을 그대로 갖는 infoLoading
+  */
+  const { isLoading: infoLoading, data: infoData } = useQuery<InfoData>(
+    ["info", coinId],
+    () => fetchCoinInfo(coinId!)
+  );
+  const { isLoading: tickersLoading, data: tickersData } = useQuery<PriceData>(
+    ["tickers", coinId],
+    () => fetchCoinTickers(coinId!)
+  );
+  /*
   const [info, setInfo] = useState<InfoData>();
   const [priceInfo, setPriceInfo] = useState<PriceData>();
+  */
+  /*
+  useMatch()의 인자로 url 을 넘기면 해당 url과 일치할 경우 url의 정보를 반환하고,
+  일치하지 않을 경우 null을 반환한다.
+  이를 이용해서 여러 개의 탭 중 현재 보여지고 있는 탭에만 accent color를 줄 수 있다.
+  */
 
   /*
   hooks는 최선의 성능을 위해서는 hook 안에서 사용한 것은 그게 어떤 것이든
   deps에 dependency를 넣어야한다고함.
   우리가 이 hooks에 coinId를 사용한다고 알려주는 것. coinId가 변한다면 이 코드들이 다시 실행됨.
   */
+  /*
   useEffect(() => {
     (async () => {
       const infoData = await fetch(
@@ -165,7 +203,8 @@ function Coin() {
       setLoading(false);
     })();
   }, [coinId]);
-
+  */
+  const loading = infoLoading || tickersLoading;
   return (
     <Container className="font-base">
       <Header>
@@ -178,7 +217,7 @@ function Coin() {
         {/* 이걸 막기 위해 아래 ?를 넣는다 */}
         <Title className="text-accentColor">
           {/* state가 있으면 name을 가져오고 없으면 loading 출력 */}
-          {state?.name ? state.name : loading ? "Loading..." : info?.name}
+          {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
         </Title>
       </Header>
       {loading ? (
@@ -188,47 +227,49 @@ function Coin() {
           <Overview>
             <OverviewItem>
               <Span>Rank:</Span>
-              <Span>{info?.rank}</Span>
+              <Span>{infoData?.rank}</Span>
             </OverviewItem>
             <OverviewItem>
               <Span>Symbol:</Span>
-              <Span>{info?.symbol}</Span>
+              <Span>{infoData?.symbol}</Span>
             </OverviewItem>
             <OverviewItem>
               <Span>Open Source:</Span>
-              <Span>{info?.open_source ? "Yes" : "No"}</Span>
+              <Span>{infoData?.open_source ? "Yes" : "No"}</Span>
             </OverviewItem>
           </Overview>
           <Description className="text-textColor">
-            {info?.description}
+            {infoData?.description}
           </Description>
           <Overview>
             <OverviewItem>
               <Span>Total Suply:</Span>
-              <Span>{priceInfo?.total_supply}</Span>
+              <Span>{tickersData?.total_supply}</Span>
             </OverviewItem>
             <OverviewItem>
               <Span>Max Supply:</Span>
-              <Span>{priceInfo?.max_supply}</Span>
+              <Span>{tickersData?.max_supply}</Span>
             </OverviewItem>
           </Overview>
 
           {/* state를 사용하지 않고 */}
           {/* Link를 사용해서 URL을 바꿈으로써 트리러가 되어 re-render을 할 수 잇게해줌. */}
           <Tabs>
-            <Tab>
-              <Link to={`/${coinId}/chart`} className="text-textColor block">
+            {/* useMatch를 이용했기 때문에 isActive={chartMatch !== null} */}
+            {/* null 인지 아닌지 판단 가능 */}
+            <Tab isActive={chartMatch !== null}>
+              <Link to={`/${coinId}/chart`} className="block">
                 Chart
               </Link>
             </Tab>
-            <Tab>
-              <Link to={`/${coinId}/price`} className="text-textColor block">
+            <Tab isActive={priceMatch !== null}>
+              <Link to={`/${coinId}/price`} className="block">
                 Price
               </Link>
             </Tab>
           </Tabs>
 
-          <Outlet />
+          <Outlet context={{ coinId }} />
         </>
       )}
     </Container>
