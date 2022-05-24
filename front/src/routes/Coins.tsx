@@ -3,6 +3,7 @@ import tw from "tailwind-styled-components";
 import { useState, useEffect } from "react";
 import { useQuery } from "react-query";
 import { fetchCoins } from "./../api";
+import { Helmet } from "react-helmet";
 
 const Container = tw.div`
   pl-0
@@ -61,8 +62,11 @@ function Coins() {
   */
   return (
     <Container className="font-base">
+      <Helmet>
+        <title>Coins</title>
+      </Helmet>
       <Header>
-        <Title className="text-accentColor">코인들</Title>
+        <Title className="text-accentColor">Coins</Title>
       </Header>
       {isLoading ? (
         <div className="text-center block text-textColor">"Loading..."</div>

@@ -10,6 +10,7 @@ import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useQuery } from "react-query";
 import { fetchCoinTickers, fetchCoinInfo } from "./../api";
+import { Helmet } from "react-helmet";
 
 const Container = tw.div`
   pl-0
@@ -168,7 +169,10 @@ function Coin() {
   );
   const { isLoading: tickersLoading, data: tickersData } = useQuery<PriceData>(
     ["tickers", coinId],
-    () => fetchCoinTickers(coinId!)
+    () => fetchCoinTickers(coinId!),
+    {
+      refetchInterval: 10000,
+    }
   );
   /*
   const [info, setInfo] = useState<InfoData>();
@@ -207,6 +211,11 @@ function Coin() {
   const loading = infoLoading || tickersLoading;
   return (
     <Container className="font-base">
+      <Helmet>
+        <title>
+          {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
+        </title>
+      </Helmet>
       <Header>
         {/* 왜 {coinId}가 아닌 {state.name} 으로 주는가? */}
         {/* {coinId}는 API에서 받아오는 것이므로 속도가 느릴 수 있다. */}
@@ -234,8 +243,8 @@ function Coin() {
               <Span>{infoData?.symbol}</Span>
             </OverviewItem>
             <OverviewItem>
-              <Span>Open Source:</Span>
-              <Span>{infoData?.open_source ? "Yes" : "No"}</Span>
+              <Span>Price:</Span>
+              <Span>${tickersData?.quotes.USD.price.toFixed(3)}</Span>
             </OverviewItem>
           </Overview>
           <Description className="text-textColor">
